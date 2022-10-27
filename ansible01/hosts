@@ -1,0 +1,7 @@
+[all:vars]
+ansible_python_interpreter=auto
+ansible_connection=local
+ansible_become=yes
+
+[ansible_local]
+localhost
