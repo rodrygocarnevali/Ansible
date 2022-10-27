@@ -1,0 +1,17 @@
+- name: Instalando programas
+  apt:
+    name: '{{ item.name }}'
+    state: '{{ item.state }}'
+    update_cache: yes
+  with_items:
+    - {name: '{{ install_prog }}', state: 'latest'}
+  tags:
+  - config_instalacao_programas
+
+- name: subindo serviço do apache  e Mysql
+  service: 
+    name: '{{item}}', state: started
+    with_items:
+      - apache
+      - mysql
+

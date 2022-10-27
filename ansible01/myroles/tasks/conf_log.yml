@@ -1,0 +1,67 @@
+- name: Localizando arquivos em logrotate.d
+  find:
+    paths: /etc/logrotate.d
+    recurse: no
+    file_type: file
+    use_regex: yes
+    patterns:
+      - 'alternatives'
+      - 'apport'
+      - 'apt'
+      - 'aptitude'
+      - 'cups-daemon'
+      - 'dpkg'
+      - 'rsyncd.conf'
+      - 'ubuntu-advantage-tools'
+  register: logrotate
+  tags:
+  - config_logs
+
+- name: Ajustando o parametro rotate em logrotate.d
+  replace:
+    path: '{{ item.path }}'
+    regexp: '^(.*)rotate(.*)'
+    replace: '\1rotate 4'
+  with_items: "{{ logrotate.files }}"
+  tags:
+  - config_logs
+  - ajuste_logrotated
+  notify:
+    - restart_logrotated
+
+- name: Ajustando armazenamento de logs do systemd-journald
+  replace:
+    path: /etc/systemd/journald.conf
+    regexp: '^(.*)#SystemMaxUse=(.*)'
+    replace: '\1SystemMaxUse=300M'
+  tags:
+  - config_logs
+  - ajuste_journalctl
+  notify:
+    - restart_systemd-journald
+
+- name: Localizando arquivos de logs antigos
+  find:
+    path: /var/log
+    age: 5d
+    recurse: no
+    file_type: file
+  register: logs_antigos
+  tags:
+  - config_logs
+  - logs_antigos
+
+- name: Apagando arquivos de logs antigos
+  file:
+    path: '{{ item.path }}'
+    state: absent
+  with_items: "{{ logs_antigos.files }}"
+  tags:
+  - config_logs
+  - apagando_logs_antigos
+
+- name: Limpando Logs systemd journal com mais de 5 dias.
+  command: journalctl --vacuum-time=5d
+  tags:
+  - config_logs
+  - apagando_logs_journal

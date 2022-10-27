@@ -1,0 +1,10 @@
+- name: restart_logrotated
+  systemd:
+    name: logrotate
+    state: restarted
+
+- name: restart_systemd-journald
+  systemd:
+    name: systemd-journald
+    state: restarted
+

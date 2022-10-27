@@ -1,0 +1,16 @@
+---
+# Colocar as variaveis qeu serão utilizadas para configuração/instalação de programas
+# ou qualquer outra variável que seja utilizada em uma task do Ansible.
+
+# Variável para instalação de programas.
+install_prog:
+  - apt-file
+  - aptitude
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - git
+  - htop
+  - apache2
+  - mysql-server
+  - python-mysqldb
