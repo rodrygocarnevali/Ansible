@@ -2,10 +2,6 @@
 
 Este repositório contém a configuração principal do Ansible para automatizar tarefas de configuração em hosts locais.
 
-## Propósito do Programa
-
-O propósito deste programa é facilitar a configuração e manutenção de ambientes locais através da automação de tarefas com Ansible. Ele aborda a instalação de programas específicos, ajustes de configuração de logs e outras personalizações necessárias.
-
 ## Estrutura do Projeto
 
 ### 1. `.gitattributes`
